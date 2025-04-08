@@ -17,7 +17,9 @@ st.write("### Efectividad")
 
 st.write("#### Tareas con errores")
 st.write("Proporción de tareas donde los errores fueron realizados por el usuario")
-
+st.latex(r"""
+\text{Proporción de errores} = \frac{\text{Número de tareas con errores}}{\text{Número total de tareas}}
+""")
 tareas = ["Iniciar sesión", "Elegir carrera", "Elegir asignatura", "Generar excel"]
 errores_usuario = [0.5, 0.2, 0.2, 0.1]
 
@@ -48,11 +50,42 @@ with col1:
 
 st.write("#### Intensidad de error en la tarea")
 st.write("Proporción de usuarios que cometen un error al realizar una tarea")
+st.latex(r"""
+\text{Intensidad de error} = \text{Cantidad total de errores cometidos por los usuarios en una tarea}
+""")
+intensidad_error = [2, 1, 3, 0]  # cantidad de errores
+fig, ax = plt.subplots(figsize=(10, 5))
+bars2 = ax.bar(tareas, intensidad_error, label='Intensidad de error', color='#E74C3C')
+for bar in bars2:
+    yval = bar.get_height()
+    ax.text(
+        bar.get_x() + bar.get_width() / 2,
+        yval,
+        f"{yval:.0f}",
+        ha='center',
+        va='bottom',
+        fontsize=10,
+        color='black'
+    )
+ax.set_title("Intensidad de Error por Tarea", pad=20)
+ax.set_ylabel("Cantidad de errores")
+ax.legend(loc='upper right')
+ax.set_ylim(0, max(intensidad_error) + 1)
+st.pyplot(fig)
+col1, col2 = st.columns(2)
+with col1:
+    st.metric("Promedio de errores por tarea", f"{np.mean(intensidad_error):.1f} errores")
+with col2:
+    st.metric("Tarea con más errores", f"{max(intensidad_error)} errores")
+
 
 st.write("### Eficiencia")
 
 st.write("#### Tiempo de tarea")
 st.write("Tiempo promedio que un usuario tarda en completar una tarea")
+st.latex(r"""
+\text{Tiempo promedio} = \frac{\sum_{i=1}^n \text{Tiempo}_i}{n}
+""")
 
 tiempos_tarea = [12.5, 8.2, 15.3, 6.7]  # en segundos
 
@@ -83,6 +116,9 @@ with col2:
 
 st.write("#### Relación de tiempo productivo")
 st.write("Proporción de tiempo productivo en relación al tiempo total de la tarea")
+st.latex(r"""
+\text{Proporción de tiempo productivo} = \frac{\text{Tiempo productivo}}{\text{Tiempo total de la tarea}}
+""")
 
 tiempo_productivo = [0.85, 0.92, 0.78, 0.95]  # proporción
 
@@ -110,6 +146,9 @@ st.metric("Promedio tiempo productivo", f"{np.mean(tiempo_productivo)*100:.1f}%"
 
 st.write("#### Acciones innecesarias")
 st.write("Proporción de las acciones realizadas por el usuario que no son necesarias para lograr los objetivos de la tarea")
+st.latex(r"""
+\text{Porcentaje innecesarias} = \frac{\sum \text{Acciones innecesarias}}{\sum \text{Acciones totales}} \times 100
+""")
 
 acciones_totales = [15, 12, 18, 8]
 acciones_innecesarias = [0, 0, 5, 0]
